@@ -1,17 +1,20 @@
-(() => {
+`use strict`
 
   const todos = [];
+
+  let newId = 1;
   
   const inputBox = document.getElementById('input-todo-box');
   const addButton = document.getElementById('add-button');
-  const listContainer = document.getElementById('todo-list');
+  const tablebody = document.getElementById('todo-body');
   
   addButton.addEventListener('click', (event) => {
     
-    const todo = inputBox.value;
+    const todo = {id: newId, comment: inputBox.value, status: '作業中', action: '削除'}
+    newId++;
     inputBox.value = '';
+    inputBox.focus();
     
-    console.log(todo);
     if (todo) {
       todos.push(todo);
       showTodos();
@@ -19,25 +22,33 @@
   });
 
   const showTodos = () => {
-    while(listContainer.firstChild) {
-      listContainer.removeChild(listContainer.firstChild);
+    while(tablebody.firstChild) {
+      tablebody.removeChild(tablebody.firstChild);
     }
-    todos.forEach((todo, index) => {
-      const todoItem = document.createElement('tr');
-      const taskNumber = index + 1;
+    todos.forEach((todo) => {
+      const tableRecord = document.createElement('tr');
+      tablebody.appendChild(tableRecord);
 
-      todoItem.textContent = `${taskNumber} : ${todo}`;
-      listContainer.appendChild(todoItem);
+      const tableId = document.createElement('td');
+      const tablecomment = document.createElement('td');
+      const tableStatus = document.createElement('td');
+      const tableAction = document.createElement('td');
 
-      const conditionButton = document.createElement('button');
-      conditionButton.textContent = '作業中';
-      todoItem.appendChild(conditionButton);
+      const statusButton = document.createElement('button');
+      const deleterButton = document.createElement('button');
 
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = '削除';
-      todoItem.appendChild(deleteButton);
+      
+      tableId.textContent = todo.id;
+      tablecomment.textContent = todo.comment;      
+      statusButton.textContent = todo.status;
+      deleterButton.textContent = todo.action;
+      
+      tableRecord.appendChild(tableId);      
+      tableRecord.appendChild(tablecomment);      
+      tableRecord.appendChild(tableStatus);      
+      tableRecord.appendChild(tableAction);      
+      
+      tableStatus.appendChild(statusButton);
+      tableAction.appendChild(deleterButton);
     });
   };
-
-  
-})();

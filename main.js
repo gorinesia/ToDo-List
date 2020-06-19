@@ -1,7 +1,7 @@
 `use strict`
 
 {
-  ///// ToDoリストのの作成  1.タスク追加機能 /////
+  ///// ToDoリストのの作成  2.タスク削除機能 /////
 
   // 入力したTodoタスクの一覧を保持する配列を定義する
   const todos = [];
@@ -75,6 +75,10 @@
   const createDeleteButton = () => {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
+    deleteButton.addEventListener('click', (tableId) => {
+      todos.splice(tableId, 1);
+      showTodos();
+    });
     return deleteButton;
   };
 }

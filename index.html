@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Typing Game</title>
+  <title>ToDoリスト</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>ToDoリスト</h1>
-  
+
   <label><input type="radio" name="todo" checked>すべて</label>
   <label><input type="radio" name="todo">作業中</label>
   <label><input type="radio" name="todo">完了</label>
@@ -17,22 +17,17 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>コメント</th>
+        <th >コメント</th>
         <th>状態</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td></td>
-      </tr>
-    </tbody>
+    <tbody id="todo-body"></tbody>
   </table>
 
   <h2>新規タスクの追加</h2>
-  <form action="">
-    <label><input type="text" name="task"></label>
-    <button>追加</button>
-  </form>
+  <label for="input-todo-box">ToDoリスト</label>
+  <input id="input-todo-box" type="text">
+  <button id="add-button">追加</button>
 
   <script src='main.js'></script>
 </body>

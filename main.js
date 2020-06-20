@@ -1,7 +1,7 @@
 `use strict`
 
 {
-  ///// ToDoリストのの作成  2.タスク削除機能 /////
+  ///// ToDoリストのの作成  3.タスク状態変更機能 /////
 
   // 入力したTodoタスクの一覧を保持する配列を定義する
   const todos = [];
@@ -69,6 +69,13 @@
   const createStatusButton = () => {
     const statusButton = document.createElement('button');
     statusButton.textContent = '作業中';
+    statusButton.addEventListener('click', () => {
+      if (statusButton.textContent === '作業中'){
+        statusButton.textContent = '完了';
+      } else {
+        statusButton.textContent = '作業中';
+      }
+    });
     return statusButton;
   };
 

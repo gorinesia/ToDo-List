@@ -61,7 +61,7 @@
 
       //td要素の子要素として関数を呼び出す
       tableStatus.appendChild(createStatusButton());
-      tableAction.appendChild(createDeleteButton());
+      tableAction.appendChild(createDeleteButton(tableRecord));
     });
   };
 
@@ -79,11 +79,12 @@
     return statusButton;
   };
 
-  const createDeleteButton = () => {
+  const createDeleteButton = (tableRecord) => {
+    let index = tableRecord.rowIndex - 1;
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
-    deleteButton.addEventListener('click', (tableId) => {
-      todos.splice(tableId, 1);
+    deleteButton.addEventListener('click', () => {
+      todos.splice(index, 1);
       showTodos();
     });
     return deleteButton;

@@ -1,7 +1,7 @@
 `use strict`
 
 {
-  ///// ToDoリストのの作成  2.タスク削除機能 /////
+  ///// ToDoリストのの作成  3.タスク状態変更機能 /////
 
   // 入力したTodoタスクの一覧を保持する配列を定義する
   const todos = [];
@@ -61,7 +61,7 @@
 
       //td要素の子要素として関数を呼び出す
       tableStatus.appendChild(createStatusButton());
-      tableAction.appendChild(createDeleteButton());
+      tableAction.appendChild(createDeleteButton(tableRecord));
     });
   };
 
@@ -69,14 +69,22 @@
   const createStatusButton = () => {
     const statusButton = document.createElement('button');
     statusButton.textContent = '作業中';
+    statusButton.addEventListener('click', () => {
+      if (statusButton.textContent === '作業中'){
+        statusButton.textContent = '完了';
+      } else {
+        statusButton.textContent = '作業中';
+      }
+    });
     return statusButton;
   };
 
-  const createDeleteButton = () => {
+  const createDeleteButton = (tableRecord) => {
+    let index = tableRecord.rowIndex - 1;
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
-    deleteButton.addEventListener('click', (tableId) => {
-      todos.splice(tableId, 1);
+    deleteButton.addEventListener('click', () => {
+      todos.splice(index, 1);
       showTodos();
     });
     return deleteButton;

@@ -1,11 +1,11 @@
 `use strict`
 
 {
-  ///// ToDoリストのの作成  3.タスク状態変更機能 /////
+  ///// ToDoリストのの作成  4.タスク表示/非表示切り替え機能 /////
 
   // 入力したTodoタスクの一覧を保持する配列を定義する
+  // IDのための変数を用意する
   const todos = [];
-
   let nextId = 0;
 
   // HTMLのID値を使って以下のDOM要素を取得する //
@@ -67,7 +67,7 @@
 
       //td要素の子要素として関数を呼び出す
       tableStatus.appendChild(createStatusButton(todo));
-      tableAction.appendChild(createDeleteButton(tableRecord));
+      tableAction.appendChild(createDeleteButton(todo.id));
     });
   };
 
@@ -88,13 +88,15 @@
   };
   
   //「削除」ボタンを作成する関数//
-  const createDeleteButton = (tableRecord) => {
-    let index = tableRecord.rowIndex - 1;
+  const createDeleteButton = (id) => {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
     deleteButton.addEventListener('click', () => {
-      todos.splice(index, 1);
-      showTodos(todos);
+      const targetIndex = todos.findIndex(todo => {
+        return todo.id === id;
+      });
+      todos.splice(targetIndex, 1);
+      filterTodos();
     });
     return deleteButton;
   };
@@ -106,7 +108,7 @@
     } else if (radioButton[1].checked) {
       const doingTodos = todos.filter(todo => {return todo.status === '作業中'});
       return showTodos(doingTodos);
-    } else {
+    } else if (radioButton[2].checked) {
       const doneTodos = todos.filter(todo => {return todo.status === '完了'});
       return showTodos(doneTodos);
     }

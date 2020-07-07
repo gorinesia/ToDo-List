@@ -1,12 +1,8 @@
 `use strict`
 
 {
-  ///// ToDoリストのの作成  4.タスク表示/非表示切り替え機能 /////
-
   // 入力したTodoタスクの一覧を保持する配列を定義する
-  // IDのための変数を用意する
   const todos = [];
-  let nextId = 0;
 
   // HTMLのID値を使って以下のDOM要素を取得する //
   // 入力ボックス
@@ -16,12 +12,10 @@
   const inputBox = document.getElementById('input-todo-box');
   const addButton = document.getElementById('add-button');
   const tableBody = document.getElementById('todo-body');
-  const radioButton = document.getElementsByName('radio1');
 
   // 「追加」ボタンがクリックされたときの処理を実装する //
   addButton.addEventListener('click', () => {
-    const todo = { id: nextId, comment: inputBox.value, status: '作業中' }
-    nextId++;
+    const todo = { id: todos.length, comment: inputBox.value, status: '作業中' }
     inputBox.focus();
 
     // 空文字が入力されたときの処理
@@ -76,7 +70,7 @@
     const statusButton = document.createElement('button');
     statusButton.textContent = todo.status;
     statusButton.addEventListener('click', () => {
-      if (todo.status === '作業中'){
+      if (todo.status === '作業中') {
         todo.status = '完了';
         filterTodos();
       } else {
@@ -96,19 +90,29 @@
         return todo.id === id;
       });
       todos.splice(targetIndex, 1);
+      todos.forEach((value, index) => {
+        todos[index].id = index;
+      });
       filterTodos();
     });
     return deleteButton;
   };
 
+  // ラジオボタンのIDを取得
+  const radioButtonAll = document.getElementById('radio-all-select');
+  const radioButtonWorking = document.getElementById('radio-working-select');
+  const radioButtonDone = document.getElementById('radio-done-select');
+  const radioButton = document.getElementsByName('radio1');
+
+
   //ラジオボタン押下時の「表示・非表示」の機能を管理する関数//
   const filterTodos = () => {
-    if (radioButton[0].checked) {
+    if (radioButtonAll.checked) {
       return showTodos(todos);
-    } else if (radioButton[1].checked) {
+    } else if (radioButtonWorking.checked) {
       const doingTodos = todos.filter(todo => {return todo.status === '作業中'});
       return showTodos(doingTodos);
-    } else if (radioButton[2].checked) {
+    } else if (radioButtonDone.checked) {
       const doneTodos = todos.filter(todo => {return todo.status === '完了'});
       return showTodos(doneTodos);
     }

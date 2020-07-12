@@ -28,7 +28,7 @@
       todos.push(todo);
       inputBox.value = '';
       showTodos(todos);
-      filterTodos();
+      filterTodos(status);
     }
   });
 
@@ -72,15 +72,15 @@
     statusButton.addEventListener('click', () => {
       if (todo.status === '作業中') {
         todo.status = '完了';
-        filterTodos();
+        filterTodos(status);
       } else {
         todo.status = '作業中';
-        filterTodos();
+        filterTodos(status);
       }
     });
     return statusButton;
   };
-  
+
   //「削除」ボタンを作成する関数//
   const createDeleteButton = (id) => {
     const deleteButton = document.createElement('button');
@@ -93,35 +93,39 @@
       todos.forEach((value, index) => {
         todos[index].id = index;
       });
-      filterTodos();
+      filterTodos(status);
     });
     return deleteButton;
   };
 
-  // ラジオボタンのIDを取得
-  const radioButtonAll = document.getElementById('radio-all-select');
-  const radioButtonWorking = document.getElementById('radio-working-select');
-  const radioButtonDone = document.getElementById('radio-done-select');
+  //ラジオボタン押下時の「表示・非表示」の機能を管理する関数//
+  const filterTodos = (status) => {
+    const radioform = document.getElementById('radio-form');
+    const radioButtonLists = radioform.radio1;
+    let radioButtonValue = radioButtonLists.value;
+    let changeOfStatus = radioButtonValue;
+    switch (changeOfStatus) {
+      case 'all':
+        showTodos(todos);
+        break;
+      case 'working':
+        const workingTodos = todos.filter(todo => { return todo.status === '作業中' });
+        showTodos(workingTodos);
+        break;
+      case 'done':
+        const doneTodos = todos.filter(todo => { return todo.status === '完了' });
+        showTodos(doneTodos);
+        break;
+    }
+  };
+
+// ラジオボタンのIDを取得
   const radioButton = document.getElementsByName('radio1');
 
-
-  //ラジオボタン押下時の「表示・非表示」の機能を管理する関数//
-  const filterTodos = () => {
-    if (radioButtonAll.checked) {
-      return showTodos(todos);
-    } else if (radioButtonWorking.checked) {
-      const doingTodos = todos.filter(todo => {return todo.status === '作業中'});
-      return showTodos(doingTodos);
-    } else if (radioButtonDone.checked) {
-      const doneTodos = todos.filter(todo => {return todo.status === '完了'});
-      return showTodos(doneTodos);
-    }
-  }
-
-  //ラジオボタンを押した際の挙動
-  radioButton.forEach((e, number) => {
-    radioButton[number].addEventListener('click', () => {
-      filterTodos();
+//ラジオボタンを押した際の挙動
+  radioButton.forEach((status, number) => {
+    radioButton[number].addEventListener('change', () => {
+      filterTodos(status);
     });
-  });
+  });  
 }

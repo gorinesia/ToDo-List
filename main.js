@@ -4,16 +4,19 @@
   // 入力したTodoタスクの一覧を保持する配列を定義する
   const todos = [];
 
-  // HTMLのID値を使って以下のDOM要素を取得する //
-  // 入力ボックス
-  // 追加ボタン
-  // Todoリストを一覧表示するtable要素
-  // ラジオボタン
+  /* 
+  HTMLのID値を使って以下のDOM要素を取得する
+  ・入力ボックス
+  ・追加ボタン
+  ・Todoリストを一覧表示するtable要素
+  ・ラジオボタン
+  */
   const inputBox = document.getElementById('input-todo-box');
   const addButton = document.getElementById('add-button');
   const tableBody = document.getElementById('todo-body');
+  const radioButton = document.getElementsByName('radio1');
 
-  // 「追加」ボタンがクリックされたときの処理を実装する //
+  // 「追加」ボタンがクリックされたときの処理を実装する
   addButton.addEventListener('click', () => {
     const todo = { id: todos.length, comment: inputBox.value, status: '作業中' }
     inputBox.focus();
@@ -28,11 +31,11 @@
       todos.push(todo);
       inputBox.value = '';
       showTodos(todos);
-      filterTodos(status);
+      filterTodos();
     }
   });
 
-  // 「todos」の中身を一覧表示するための関数を用意する //
+  // 「todos」の中身を一覧表示するための関数を用意する
   const showTodos = (todos) => {
     tableBody.textContent = '';
 
@@ -65,23 +68,23 @@
     });
   };
 
-  //「状態」ボタンを作成する関数//
+  //「状態」ボタンを作成する関数
   const createStatusButton = (todo) => {
     const statusButton = document.createElement('button');
     statusButton.textContent = todo.status;
     statusButton.addEventListener('click', () => {
       if (todo.status === '作業中') {
         todo.status = '完了';
-        filterTodos(status);
+        filterTodos();
       } else {
         todo.status = '作業中';
-        filterTodos(status);
+        filterTodos();
       }
     });
     return statusButton;
   };
 
-  //「削除」ボタンを作成する関数//
+  //「削除」ボタンを作成する関数
   const createDeleteButton = (id) => {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
@@ -93,17 +96,15 @@
       todos.forEach((value, index) => {
         todos[index].id = index;
       });
-      filterTodos(status);
+      filterTodos();
     });
     return deleteButton;
   };
 
-  //ラジオボタン押下時の「表示・非表示」の機能を管理する関数//
-  const filterTodos = (status) => {
-    const radioform = document.getElementById('radio-form');
-    const radioButtonLists = radioform.radio1;
-    let radioButtonValue = radioButtonLists.value;
-    let changeOfStatus = radioButtonValue;
+  //ラジオボタン押下時の「表示・非表示」の機能を管理する関数
+  const filterTodos = () => {
+    const radioForm = document.getElementById('radio-form');
+    let changeOfStatus = radioForm.radio1.value;
     switch (changeOfStatus) {
       case 'all':
         showTodos(todos);
@@ -119,13 +120,10 @@
     }
   };
 
-// ラジオボタンのIDを取得
-  const radioButton = document.getElementsByName('radio1');
-
-//ラジオボタンを押した際の挙動
+  //ラジオボタンを押した際の挙動
   radioButton.forEach((status, number) => {
     radioButton[number].addEventListener('change', () => {
-      filterTodos(status);
+      filterTodos();
     });
   });  
 }
